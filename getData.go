@@ -45,12 +45,12 @@ func getData() {
 	db := newDB()
 	time := getHourTimestamp()
 	// 获取每个小时前六十分钟的串
-	// db.Model(&ForumPost{}).Where("time >= ? and time < ?", time-3600, time).Count(&count)
-	db.Model(&ForumPost{}).Count(&count)
+	db.Model(&ForumPost{}).Where("time >= ? and time < ?", time-3600, time).Count(&count)
+	// db.Model(&ForumPost{}).Count(&count)
 	for i := 0; count > 0; i++ {
 		var res []ForumPost
-		// db.Limit(int(size)).Offset(i*int(size)).Order("time asc").Where("time >= ? and time < ?", time-3600, time).Find(&res)
-		db.Limit(int(size)).Offset(i * int(size)).Order("time asc").Find(&res)
+		db.Limit(int(size)).Offset(i*int(size)).Order("time asc").Where("time >= ? and time < ?", time-3600, time).Find(&res)
+		// db.Limit(int(size)).Offset(i * int(size)).Order("time asc").Find(&res)
 		count -= size
 		saveToJson(createFileName(i, time), res)
 	}
