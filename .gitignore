@@ -1,3 +1,5 @@
 config.json
 *.exe
 *.log
+log/
+save/
