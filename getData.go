@@ -18,6 +18,8 @@ type config struct {
 	LastRecordTime int
 }
 
+var db = newDB()
+
 // 获取config配置
 func getConfig() config {
 	file, err := ioutil.ReadFile("./conf/config.json")
@@ -42,23 +44,19 @@ func updateLastRecordTime(nowTime int64) {
 }
 
 // 新建db连接
-func newDB() (*gorm.DB, error) {
+func newDB() *gorm.DB {
 	config := getConfig()
 	dsn := config.UserName + ":" + config.PassWord + "@tcp(" + config.Ip + ")/" + config.Database + "?timeout=30s"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Println(err)
 	}
-	return db, err
+	return db
 }
 
 func getData(timeStamp int64) error {
 	var size int64 = 100
 	var count int64
-	db, err := newDB()
-	if err != nil {
-		return err
-	}
 	nowTime := getHourTimestamp(timeStamp)
 	// 获取每个小时前六十分钟的串
 	db.Model(&ForumPost{}).Where("time >= ? and time < ?", nowTime-3600, nowTime).Count(&count)
