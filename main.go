@@ -51,7 +51,9 @@ func initItem() {
 		if recordTime > nowTime {
 			break
 		}
-		fmt.Println(recordTime)
+		timeLayout := "2006-01-02 15:04:05"
+		datetime := time.Unix(recordTime, 0).Format(timeLayout)
+		fmt.Println(datetime)
 		getData(recordTime)
 		recordTime += 3600
 	}

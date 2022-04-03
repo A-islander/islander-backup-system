@@ -51,6 +51,10 @@ func newDB() *gorm.DB {
 	if err != nil {
 		log.Println(err)
 	}
+	sqlDb, _ := db.DB()
+	sqlDb.SetMaxIdleConns(10)
+	sqlDb.SetMaxOpenConns(50)
+	sqlDb.SetConnMaxLifetime(time.Hour)
 	return db
 }
 
