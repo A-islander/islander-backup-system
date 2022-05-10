@@ -46,6 +46,8 @@ func mission() {
 func initItem() {
 	conf := getConfig()
 	recordTime := int64(conf.LastRecordTime)
+	// 往回倒一天
+	recordTime = recordTime - 86400
 	nowTime := time.Now().Unix()
 	for {
 		if recordTime > nowTime {
