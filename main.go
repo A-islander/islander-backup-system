@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/exec"
 	"time"
 
 	"github.com/robfig/cron/v3"
@@ -20,6 +21,7 @@ func init() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile | log.LUTC)
 
 	initItem()
+	gitSave()
 	return
 }
 
@@ -40,6 +42,7 @@ func mission() {
 	if err != nil {
 		log.Println(err.Error())
 	}
+	gitSave()
 	log.Println("Save")
 }
 
@@ -59,4 +62,27 @@ func initItem() {
 		getData(recordTime)
 		recordTime += 3600
 	}
+}
+
+func gitSave() {
+	runCmd("./save", "git", "add", "-A")
+	runCmd("./save", "git", "commit", "-m", "\""+nowTime()+" backup\"")
+	runCmd("./save", "git", "push", "origin", "master")
+}
+
+func runCmd(dir, oper string, param ...string) {
+	cmd := exec.Command(oper, param...)
+	cmd.Dir = dir
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		log.Println(err)
+	}
+	fmt.Println(string(out))
+}
+
+func nowTime() string {
+	nowTime := time.Now().Unix()
+	timeLayout := "2006-01-02 15:04:05"
+	datetime := time.Unix(nowTime, 0).Format(timeLayout)
+	return datetime
 }

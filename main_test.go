@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -11,7 +12,11 @@ import (
 // }
 
 func TestGet(t *testing.T) {
-	// getData(time.Now().Unix())
+	runCmd("./save", "git", "status")
+	runCmd("./save", "git", "status")
+	fmt.Println(nowTime())
+	// runCmd("./save", "git", "add", "-A")
+	// runCmd("./save", "git", "commit", "-m", "\""+"\"")
 }
 
 func TestInit(t *testing.T) {
