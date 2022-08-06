@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/robfig/cron/v3"
+	"github.com/zh-five/xdaemon"
 )
 
 func init() {
@@ -26,6 +27,10 @@ func init() {
 }
 
 func main() {
+	logFile := "./log/daemon.log"
+
+	//启动一个子进程后主程序退出
+	xdaemon.Background(logFile, true)
 	crons := cron.New()
 	_, err := crons.AddFunc("@every 1h", mission)
 	if err != nil {
